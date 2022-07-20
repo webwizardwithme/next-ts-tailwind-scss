@@ -1,0 +1,238 @@
+@use '../../utils/shared';
+
+// config
+
+$ROOT: shared.makeRoot('Badge');
+@function el($name) {
+  @return shared.makeSubElementName($ROOT, $name);
+}
+
+@mixin interactiveColorsForVariant($color) {
+  @apply bg-#{$color}-500 text-white;
+
+  &.is-hovered {
+    @apply bg-#{$color}-600;
+  }
+  &.is-pressed {
+    @apply bg-#{$color}-700;
+  }
+
+  &.is-light {
+    @apply bg-#{$color}-50 text-#{$color}-700;
+
+    &.is-hovered {
+      @apply bg-#{$color}-100;
+    }
+    &.is-pressed {
+      @apply bg-#{$color}-200;
+    }
+  }
+
+  &.is-outline {
+    @apply border border-#{$color}-700 bg-transparent text-#{$color}-700;
+
+    &.is-hovered {
+      @apply border-#{$color}-400 bg-#{$color}-400 text-light-gray-500;
+    }
+    &.is-pressed {
+      @apply border-#{$color}-500 bg-#{$color}-500 text-light-gray-500;
+    }
+
+    &.is-light {
+      @apply border border-#{$color}-300 text-#{$color}-700 bg-#{$color}-50;
+
+      &.is-hovered {
+        @apply border-#{$color}-200 text-#{$color}-600 bg-#{$color}-100;
+      }
+      &.is-pressed {
+        @apply border-#{$color}-100 text-#{$color}-500 bg-#{$color}-200;
+      }
+    }
+  }
+
+  & #{el('dismiss-button')} {
+    color: inherit;
+    transition: inherit;
+    @apply bg-transparent;
+  }
+}
+
+@mixin ghostColorsForVariant($color) {
+  @apply text-#{$color}-700;
+
+  &.is-hovered {
+    @apply bg-#{$color}-100;
+  }
+  &.is-pressed {
+    @apply bg-#{$color}-200;
+  }
+}
+
+#{$ROOT} {
+  @apply rounded-md overflow-hidden select-none whitespace-nowrap;
+  @apply flex justify-center items-center gap-[4px] cursor-default;
+  @apply focus:outline-none transition-colors w-auto opacity-90 bg-transparent;
+
+  // sizes
+
+  &.size-small {
+    @apply text-body-sm-heavy h-[20px] px-[6px] py-[4px];
+  }
+
+  &.size-medium {
+    @apply text-body-md-heavy h-[24px] px-[8px] py-[4px];
+  }
+
+  &.is-interactive {
+    @apply cursor-pointer;
+  }
+
+  &.has-avatar {
+    @apply rounded-full flex-row-reverse px-[4px] pl-[6px];
+    &.is-interactive,
+    &.has-icon {
+      @apply flex-row px-[4px] pr-[6px];
+    }
+  }
+
+  // variants
+
+  &.variant-default {
+    @apply bg-dark-gray-500 text-white;
+
+    &.is-hovered {
+      @apply bg-dark-gray-600;
+    }
+    &.is-pressed {
+      @apply bg-dark-gray-700;
+    }
+
+    &.is-light {
+      @apply bg-light-gray-500 text-dark-gray-700;
+
+      &.is-hovered {
+        @apply bg-light-gray-600;
+      }
+      &.is-pressed {
+        @apply bg-light-gray-700;
+      }
+    }
+
+    &.is-outline {
+      @apply border border-dark-gray-700 bg-transparent text-dark-gray-700;
+
+      &.is-hovered {
+        @apply border-dark-gray-400 text-light-gray-100 bg-dark-gray-400;
+      }
+      &.is-pressed {
+        @apply bg-dark-gray-500;
+      }
+
+      &.is-light {
+        @apply border border-gray-700 text-dark-gray-700 bg-light-gray-500;
+
+        &.is-hovered {
+          @apply bg-light-gray-600;
+        }
+        &.is-pressed {
+          @apply bg-light-gray-700;
+        }
+      }
+    }
+
+    & #{el('dismiss-button')} {
+      color: inherit;
+      transition: inherit;
+      @apply bg-transparent;
+    }
+  }
+
+  &.variant-primary {
+    @include interactiveColorsForVariant("red");
+  }
+
+  &.variant-success {
+    @include interactiveColorsForVariant("green");
+  }
+
+  &.variant-danger {
+    @include interactiveColorsForVariant("orange");
+  }
+
+  &.variant-info {
+    @include interactiveColorsForVariant("blue");
+  }
+
+  &.variant-warning {
+    @include interactiveColorsForVariant("yellow");
+  }
+
+  &.is-ghost {
+    @apply border-none bg-white;
+
+    &.variant-default {
+      @apply text-dark-gray-700;
+
+      &.is-hovered {
+        @apply bg-light-gray-600;
+      }
+      &.is-pressed {
+        @apply bg-light-gray-700;
+      }
+    }
+
+    &.variant-primary {
+      @include ghostColorsForVariant("red");
+    }
+
+    &.variant-success {
+      @include ghostColorsForVariant("green");
+    }
+  
+    &.variant-danger {
+      @include ghostColorsForVariant("danger");
+    }
+  
+    &.variant-info {
+      @include ghostColorsForVariant("blue");
+    }
+  
+    &.variant-warning {
+      @include ghostColorsForVariant("yellow");
+    }
+  }
+}
+
+#{el('dismiss-button')} {
+  @apply appearance-none border-none;
+
+  #{$ROOT}.size-small & {
+    @apply w-[12px] h-[12px];
+  }
+  #{$ROOT}.size-medium & {
+    @apply w-[14px] h-[14px];
+  }
+}
+
+#{el('icon')} {
+  @apply border-none;
+
+  #{$ROOT}.size-small & {
+    @apply w-[12px] h-[12px];
+  }
+  #{$ROOT}.size-medium & {
+    @apply w-[16px] h-[16px];
+  }
+}
+
+#{el('avatar')} {
+  @apply rounded-full;
+
+  #{$ROOT}.size-small & {
+    @apply w-[14px] h-[14px];
+  }
+  #{$ROOT}.size-medium & {
+    @apply w-[16px] h-[16px];
+  }
+}
+
